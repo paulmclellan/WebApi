@@ -29,4 +29,22 @@ Bodyraw (application/json)
 ]
 
 
+Sample Output:
+[
+    [
+        "Simon",
+        "Sergey",
+        "Thomas"
+    ],
+    [
+        "Chris",
+        "Harry",
+        ""
+    ],
+    [
+        "Roger",
+        "",
+        ""
+    ]
+]
 
