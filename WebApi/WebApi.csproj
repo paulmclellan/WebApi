@@ -148,7 +148,6 @@
     <Compile Include="App_Start\StructuremapWebApi.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\StudentGroupsController.cs" />
-    <Compile Include="Core\StudentCore.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
     <Compile Include="DependencyResolution\IoC.cs" />
     <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
@@ -161,6 +160,8 @@
     <Compile Include="Models\Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Interfaces\ILogger.cs" />
+    <Compile Include="Services\Interfaces\IStudentCore.cs" />
+    <Compile Include="Services\StudentCore.cs" />
     <Compile Include="Services\Logger.cs" />
   </ItemGroup>
   <ItemGroup>

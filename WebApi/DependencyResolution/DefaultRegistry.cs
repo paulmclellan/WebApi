@@ -31,6 +31,7 @@ namespace WebApi.DependencyResolution {
                     scan.WithDefaultConventions();
                 });
             For<ILogger>().Use<Logger>();
+            For<IStudentCore>().Use<StudentCore>();
         }
 
         #endregion

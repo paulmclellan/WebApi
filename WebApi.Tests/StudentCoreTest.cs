@@ -1,8 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using WebApi.Core;
 using WebApi.Models;
+using WebApi.Services;
 
 namespace WebApi.Tests
 {
@@ -14,8 +14,8 @@ namespace WebApi.Tests
         public void GetStudentsWithSingleGroup()
         {
             // Arrange
-            String[,] input = new String[,] { { "", "Paul", "" } };
-            List<Student> expected = new List<Student> {
+            var input = new String[,] { { "", "Paul", "" } };
+            var expected = new List<Student> {
                 new Student (){
                     GroupId = 0,
                     Name="Paul",
@@ -24,19 +24,20 @@ namespace WebApi.Tests
             };
 
             // Act
-            StudentCore core = new StudentCore();
-            var output = core.GetStudents(input);
+            var logger = new Logger();
+            var studentCore = new StudentCore(logger);
+            var actual = studentCore.GetStudents(input);
 
             // Assert
-            CollectionAssert.AreEqual(expected, output, new StudentComparer());
+            CollectionAssert.AreEqual(expected, actual, new StudentComparer());
         }
 
         [TestMethod]
         public void GetStudentsWithMultipleGroups()
         {
             // Arrange
-            String[,] input = new String[,] { { "", "Paul", "" }, { "Fred", "", "" }, { "", "John", "" } };
-            List<Student> expected = new List<Student> {
+            var input = new String[,] { { "", "Paul", "" }, { "Fred", "", "" }, { "", "John", "" } };
+            var expected = new List<Student> {
                 new Student (){
                     GroupId = 0,
                     Name="Paul",
@@ -55,18 +56,19 @@ namespace WebApi.Tests
             };
 
             // Act
-            StudentCore core = new StudentCore();
-            var output = core.GetStudents(input);
+            var logger = new Logger();
+            var studentCore = new StudentCore(logger);
+            var actual = studentCore.GetStudents(input);
 
             // Assert
-            CollectionAssert.AreEqual(expected, output, new StudentComparer());
+            CollectionAssert.AreEqual(expected, actual, new StudentComparer());
         }
 
         [TestMethod]
         public void SetStudentGroupSingleGroup()
         {
             // Arrange
-            List<Student> input = new List<Student> {
+            var actual = new List<Student> {
                 new Student (){
                     GroupId = 0,
                     Name="Paul",
@@ -83,7 +85,7 @@ namespace WebApi.Tests
                     TimeIndex = 2,
                     MarkIndex = 1}
             };
-            List<Student> expected = new List<Student> {
+            var expected = new List<Student> {
                 new Student (){
                     GroupId = 1,
                     Name="Paul",
@@ -102,18 +104,19 @@ namespace WebApi.Tests
             };
 
             // Act
-            StudentCore core = new StudentCore();
-            core.SetStudentGroups(input);
+            var logger = new Logger();
+            var studentCore = new StudentCore(logger);
+            studentCore.SetStudentGroups(actual);
 
             // Assert
-            CollectionAssert.AreEqual(expected, input, new StudentComparer());
+            CollectionAssert.AreEqual(expected, actual, new StudentComparer());
         }
 
         [TestMethod]
         public void SetStudentGroupMultipleGroup()
         {
             // Arrange
-            List<Student> input = new List<Student> {
+            var actual = new List<Student> {
                 new Student (){
                     GroupId = 0,
                     Name="Paul",
@@ -130,7 +133,7 @@ namespace WebApi.Tests
                     TimeIndex = 2,
                     MarkIndex = 2}
             };
-            List<Student> expected = new List<Student> {
+            var expected = new List<Student> {
                 new Student (){
                     GroupId = 1,
                     Name="Paul",
@@ -149,18 +152,19 @@ namespace WebApi.Tests
             };
 
             // Act
-            StudentCore core = new StudentCore();
-            core.SetStudentGroups(input);
+            var logger = new Logger();
+            var studentCore = new StudentCore(logger);
+            studentCore.SetStudentGroups(actual);
 
             // Assert
-            CollectionAssert.AreEqual(expected, input, new StudentComparer());
+            CollectionAssert.AreEqual(expected, actual, new StudentComparer());
         }
 
         [TestMethod]
         public void GetOutputSingleGroup()
         {
             // Arrange
-            List<Student> input = new List<Student> {
+            var input = new List<Student> {
                 new Student (){
                     GroupId = 1,
                     Name="Paul",
@@ -177,21 +181,22 @@ namespace WebApi.Tests
                     TimeIndex = 2,
                     MarkIndex = 1}
             };
-            String[,] expected = new String[,] { { "Paul", "Fred", "John" } };
+            var expected = new String[,] { { "Paul", "Fred", "John" } };
 
             // Act
-            StudentCore core = new StudentCore();
-            var output = core.GetOutput(input);
+            var logger = new Logger();
+            var studentCore = new StudentCore(logger);
+            var actual = studentCore.GetOutput(input);
 
             // Assert
-            CollectionAssert.AreEqual(expected, output);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void GetOutputMultipleGroup()
         {
             // Arrange
-            List<Student> input = new List<Student> {
+            var input = new List<Student> {
                 new Student (){
                     GroupId = 1,
                     Name="Paul",
@@ -208,14 +213,15 @@ namespace WebApi.Tests
                     TimeIndex = 2,
                     MarkIndex = 2}
             };
-            String[,] expected = new String[,] { { "Paul", "Fred" }, { "John", "" } };
+            var expected = new String[,] { { "Paul", "Fred" }, { "John", "" } };
 
             // Act
-            StudentCore core = new StudentCore();
-            var output = core.GetOutput(input);
+            var logger = new Logger();
+            var studentCore = new StudentCore(logger);
+            var actual = studentCore.GetOutput(input);
 
             // Assert
-            CollectionAssert.AreEqual(expected, output);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
 

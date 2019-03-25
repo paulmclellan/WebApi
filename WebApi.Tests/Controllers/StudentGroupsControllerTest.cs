@@ -2,8 +2,10 @@
 using System.Web.Http;
 using System.Web.Http.Results;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using WebApi.Controllers;
 using WebApi.Services;
+using WebApi.Services.Interfaces;
 
 namespace WebApi.Tests.Controllers
 {
@@ -14,32 +16,36 @@ namespace WebApi.Tests.Controllers
         public void PostRequestSingleGroup()
         {
             // Arrange
-            Logger logger = new Logger();
-            StudentGroupsController controller = new StudentGroupsController(logger);
-            String[,] input = new String[,] { { "", "Paul", "" }, { "Fred", "", "" }, { "", "John", "" } };
-            String[,] expected = new string[,] { { "Paul", "Fred", "John" } };
+            var mockLogger = new Mock<ILogger>();
+            var studentCore = new StudentCore(mockLogger.Object);
+            var controller = new StudentGroupsController(mockLogger.Object, studentCore);
+
+            var input = new String[,] { { "", "Paul", "" }, { "Fred", "", "" }, { "", "John", "" } };
+            var expected = new string[,] { { "Paul", "Fred", "John" } };
 
             // Act
-            var output = controller.Post(input);
+            var actual = controller.Post(input);
 
             // Assert
-            CollectionAssert.AreEqual(expected, output);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
         public void PostRequestMultipleGroups()
         {
             // Arrange
-            Logger logger = new Logger();
-            StudentGroupsController controller = new StudentGroupsController(logger);
-            String[,] input = new String[,] { { "", "Paul", "" }, { "Fred", "", "" }, { "", "", "John" } };
-            String[,] expected = new string[,] { { "Paul", "Fred" }, { "John", "" } };
+            var mockLogger = new Mock<ILogger>();
+            var studentCore = new StudentCore(mockLogger.Object);
+            var controller = new StudentGroupsController(mockLogger.Object, studentCore);
+
+            var input = new String[,] { { "", "Paul", "" }, { "Fred", "", "" }, { "", "", "John" } };
+            var expected = new string[,] { { "Paul", "Fred" }, { "John", "" } };
 
             // Act
-            var output = controller.Post(input);
+            var actual = controller.Post(input);
 
             // Assert
-            CollectionAssert.AreEqual(expected, output);
+            CollectionAssert.AreEqual(expected, actual);
         }
 
         [TestMethod]
@@ -47,8 +53,10 @@ namespace WebApi.Tests.Controllers
         public void PostRequestBadRequest()
         {
             // Arrange
-            Logger logger = new Logger();
-            StudentGroupsController controller = new StudentGroupsController(logger);
+            var mockLogger = new Mock<ILogger>();
+            var studentCore = new StudentCore(mockLogger.Object);
+            var controller = new StudentGroupsController(mockLogger.Object, studentCore);
+
             String[,] input = null;
 
             // Act
@@ -63,9 +71,11 @@ namespace WebApi.Tests.Controllers
         public void PostRequestEmptyRequest()
         {
             // Arrange
-            Logger logger = new Logger();
-            StudentGroupsController controller = new StudentGroupsController(logger);
-            String[,] input = new String[,] { { } };
+            var mockLogger = new Mock<ILogger>();
+            var studentCore = new StudentCore(mockLogger.Object);
+            var controller = new StudentGroupsController(mockLogger.Object, studentCore);
+
+            var input = new String[,] { { } };
 
             // Act
             var output = controller.Post(input);

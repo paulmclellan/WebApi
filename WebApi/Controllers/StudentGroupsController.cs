@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Web.Http;
-using WebApi.Core;
 using WebApi.Services.Interfaces;
 
 namespace WebApi.Controllers
@@ -9,33 +8,24 @@ namespace WebApi.Controllers
     public class StudentGroupsController : ApiController
     {
         private readonly ILogger _logger;
+        private readonly IStudentCore _studentCore;
 
-        #region Constructors
-        public StudentGroupsController()
-        {
-        }
-
-        public StudentGroupsController(ILogger logger)
+        public StudentGroupsController(ILogger logger, IStudentCore studentCore)
         {
             _logger = logger;
+            _studentCore = studentCore;
         }
-        #endregion
 
-        #region Methods
         public String[,] Post(String[,] request)
         {
-            if (request == null)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
-            if (request.Length == 0)
+            if (request == null || request.Length == 0)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
 
             try
             {
-                var core = new StudentCore();
-
-                var students = core.GetStudents(request);
-                core.SetStudentGroups(students);
-                var outputResults = core.GetOutput(students);
+                var students = _studentCore.GetStudents(request);
+                _studentCore.SetStudentGroups(students);
+                var outputResults = _studentCore.GetOutput(students);
 
                 _logger.LogInformation($"Student Groups Generated - {DateTime.Now} ");
 
@@ -48,6 +38,5 @@ namespace WebApi.Controllers
                 throw new HttpResponseException(HttpStatusCode.InternalServerError);
             }
         }
-        #endregion
     }
 }
